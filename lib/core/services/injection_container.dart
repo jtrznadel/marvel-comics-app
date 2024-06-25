@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:marvel_comics_app/features/comics/data/datasources/comics_remote_data_source.dart';
+import 'package:marvel_comics_app/features/comics/data/repositories/comics_repository.dart';
+import 'package:marvel_comics_app/features/comics/domain/repositories/comics_repository.dart';
 import 'package:marvel_comics_app/features/comics/domain/usecasese/get_comics.dart';
 import 'package:marvel_comics_app/features/comics/presentation/cubit/comics_cubit.dart';
 
@@ -18,5 +20,6 @@ Future<void> _initComics() async {
     )
     ..registerLazySingleton(() => GetComics(sl()))
     ..registerLazySingleton<ComicsRemoteDataSource>(
-        () => ComicsRemoteDataSourceImpl());
+        () => ComicsRemoteDataSourceImpl())
+    ..registerLazySingleton<ComicsRepository>(() => ComicsRepositoryImpl(sl()));
 }

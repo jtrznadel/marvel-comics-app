@@ -43,7 +43,8 @@ dependencies:
   crypto: ^3.0.3
   dio: ^5.4.3+1
   get_it: ^7.6.7
-  google_fonts: 6.1.0
+  google_fonts: ^6.2.0
+
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
   assets:
     - .env
     - assets/splash_screen_images/
+    - assets/comics_images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
