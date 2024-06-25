@@ -29,7 +29,7 @@ class ComicsRemoteDataSourceImpl implements ComicsRemoteDataSource {
     final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     final String hash = _generateHash(timestamp);
     final String url =
-        '$baseUrl/comics?ts=$timestamp&apikey=$publicKey&hash=$hash';
+        '$baseUrl/comics?orderBy=-modified&ts=$timestamp&apikey=$publicKey&hash=$hash';
 
     try {
       final response = await dio.get(url);
