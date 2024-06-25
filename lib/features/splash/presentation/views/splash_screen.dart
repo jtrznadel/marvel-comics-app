@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:marvel_comics_app/core/res/app_colors.dart';
 import 'package:marvel_comics_app/core/res/media_res.dart';
-import 'package:marvel_comics_app/features/comics/presentation/views/comics_screen.dart';
+import 'package:marvel_comics_app/features/comics/presentation/views/home_screen.dart';
+import 'package:marvel_comics_app/features/comics/presentation/views/navigation_shell.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -13,7 +14,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, ComicsScreen.routeName);
+      Navigator.pushReplacementNamed(context, NavigationShell.routeName);
     });
     return Scaffold(
       body: Container(
