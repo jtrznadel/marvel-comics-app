@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:marvel_comics_app/core/res/app_colors.dart';
 import 'package:marvel_comics_app/core/services/injection_container.dart';
 import 'package:marvel_comics_app/features/comics/presentation/cubit/comics_cubit.dart';
@@ -43,8 +44,21 @@ class _NavigationShellState extends State<NavigationShell> {
         children: _screens,
       ),
       appBar: AppBar(
-        title: const Text(
-          'Marvel Comics',
+        toolbarHeight: 70,
+        title: Padding(
+          padding: const EdgeInsets.only(
+            top: 16,
+          ),
+          child: Text(
+            'Marvel Comics',
+            style: GoogleFonts.roboto(
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 24,
+                color: Color(0xFF262424),
+              ),
+            ),
+          ),
         ),
         scrolledUnderElevation: 10,
         shadowColor: Colors.black.withOpacity(.5),
