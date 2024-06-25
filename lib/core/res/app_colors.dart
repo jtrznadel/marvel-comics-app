@@ -5,4 +5,5 @@ class AppColors {
 
   static const Color splashGradientColorA = Color(0xFF142E61);
   static const Color splashGradientColorB = Color(0xFF1C3D7C);
+  static const Color navIconColor = Color(0xFFF33335);
 }
