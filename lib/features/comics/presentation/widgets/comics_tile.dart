@@ -18,7 +18,8 @@ class ComicsTile extends StatelessWidget {
       orElse: () => const CreatorModel(name: 'Unknown', role: 'writer'),
     );
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20)
+          .copyWith(bottom: 0),
       child: Container(
         width: size.width,
         height: size.height * .24,
