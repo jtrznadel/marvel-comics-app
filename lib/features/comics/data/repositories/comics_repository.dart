@@ -20,4 +20,14 @@ class ComicsRepositoryImpl implements ComicsRepository {
       return Left(ServerFailure.fromException(e));
     }
   }
+
+  @override
+  ResultFuture<List<Comics>> getSpecificComics({required String query}) async {
+    try {
+      final result = await _remoteDataSource.getSpecificComics(query: query);
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
+    }
+  }
 }

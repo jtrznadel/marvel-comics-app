@@ -5,4 +5,6 @@ abstract class ComicsRepository {
   const ComicsRepository();
 
   ResultFuture<List<Comics>> getComics();
+
+  ResultFuture<List<Comics>> getSpecificComics({required String query});
 }
