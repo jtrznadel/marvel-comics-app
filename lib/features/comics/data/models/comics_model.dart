@@ -6,6 +6,7 @@ class ComicsModel extends Comics {
     required super.id,
     required super.title,
     required super.description,
+    required super.resourceUrl,
     required super.creators,
     required super.images,
   });
@@ -15,6 +16,7 @@ class ComicsModel extends Comics {
           id: json['id'] ?? 0,
           title: json['title'] ?? '',
           description: json['description'] ?? '',
+          resourceUrl: (json['urls'] as List<dynamic>?)?.first['url'] ?? '',
           creators: (json['creators']['items'] as List?)
                   ?.map((creator) =>
                       CreatorModel.fromJson(creator as Map<String, dynamic>))

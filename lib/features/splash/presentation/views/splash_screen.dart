@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:marvel_comics_app/core/res/app_colors.dart';
 import 'package:marvel_comics_app/core/res/media_res.dart';
-import 'package:marvel_comics_app/features/comics/presentation/views/home_screen.dart';
 import 'package:marvel_comics_app/features/comics/presentation/views/navigation_shell.dart';
 
 class SplashScreen extends StatelessWidget {
