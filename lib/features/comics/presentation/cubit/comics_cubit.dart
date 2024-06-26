@@ -26,9 +26,9 @@ class ComicsCubit extends Cubit<ComicsState> {
     );
   }
 
-  Future<void> getSpecificComics() async {
+  Future<void> getSpecificComics(String query) async {
     emit(SpecificComicsLoading());
-    final result = await _getComics();
+    final result = await _getSpecificComics(query);
     result.fold(
       (failure) => emit(ComicsError(failure.errorMessage)),
       (comics) => emit(SpecificComicsLoaded(comics)),
