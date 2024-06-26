@@ -5,6 +5,7 @@ class Comics extends Equatable {
     required this.id,
     required this.title,
     required this.description,
+    required this.resourceUrl,
     required this.creators,
     required this.images,
   });
@@ -12,6 +13,7 @@ class Comics extends Equatable {
   final int id;
   final String title;
   final String description;
+  final String resourceUrl;
   final List<dynamic> creators;
   final List<dynamic> images;
 

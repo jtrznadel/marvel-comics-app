@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:marvel_comics_app/core/res/app_colors.dart';
 import 'package:marvel_comics_app/core/res/media_res.dart';
 import 'package:marvel_comics_app/core/services/injection_container.dart';
 import 'package:marvel_comics_app/features/comics/presentation/cubit/comics_cubit.dart';
 import 'package:marvel_comics_app/features/comics/presentation/views/home_screen.dart';
-import 'package:marvel_comics_app/features/comics/presentation/views/search_screen.dart';
+import 'package:marvel_comics_app/features/comics/presentation/views/search/search_screen.dart';
 
 class NavigationShell extends StatefulWidget {
   const NavigationShell({super.key});
