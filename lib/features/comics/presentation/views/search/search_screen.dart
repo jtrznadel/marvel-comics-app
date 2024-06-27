@@ -151,6 +151,32 @@ class _SearchScreenState extends State<SearchScreen> {
           } else if (state is SpecificComicsLoading &&
               state.specificComics.isEmpty) {
             return const Center(child: LoadingIndicator());
+          } else if (state is SpecificComicsLoaded &&
+              state.specificComics.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(MediaRes.magnifyingGlassIcon),
+                    const SizedBox(height: 20),
+                    Text(
+                      'There is no comic book with that name\nin our library. Check the spelling\nand try again.',
+                      maxLines: 3,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                        textStyle: const TextStyle(
+                          fontSize: 18,
+                          color: AppColors.searchTextColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           } else if (state is SpecificComicsLoaded ||
               state is SpecificComicsLoadingMore) {
             final comics = state is SpecificComicsLoaded
