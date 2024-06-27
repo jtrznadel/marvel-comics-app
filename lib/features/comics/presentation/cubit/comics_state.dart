@@ -11,7 +11,32 @@ final class ComicsInitial extends ComicsState {}
 
 final class ComicsLoading extends ComicsState {}
 
-final class SpecificComicsLoading extends ComicsState {}
+final class ComicsLoadingMore extends ComicsState {
+  const ComicsLoadingMore(this.comics);
+
+  final List<Comics> comics;
+
+  @override
+  List<Object> get props => [comics];
+}
+
+final class SpecificComicsLoading extends ComicsState {
+  const SpecificComicsLoading(this.specificComics);
+
+  final List<Comics> specificComics;
+
+  @override
+  List<Object> get props => [specificComics];
+}
+
+final class SpecificComicsLoadingMore extends ComicsState {
+  const SpecificComicsLoadingMore(this.specificComics);
+
+  final List<Comics> specificComics;
+
+  @override
+  List<Object> get props => [specificComics];
+}
 
 final class ComicsLoaded extends ComicsState {
   const ComicsLoaded(this.comics);

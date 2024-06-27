@@ -17,17 +17,21 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
   bool _showCancelButton = false;
 
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    _scrollController.addListener(_scrollListener);
   }
 
   @override
   void dispose() {
     _searchController.removeListener(_onSearchChanged);
+    _scrollController.dispose();
     _searchController.dispose();
     super.dispose();
   }
@@ -37,7 +41,7 @@ class _SearchScreenState extends State<SearchScreen> {
       _showCancelButton = _searchController.text.isNotEmpty;
     });
     String query =
-        _searchController.text != '' ? _searchController.text : '_empty_';
+        _searchController.text.isNotEmpty ? _searchController.text : '_empty_';
     context.read<ComicsCubit>().getSpecificComics(query);
   }
 
@@ -50,14 +54,21 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      context
+          .read<ComicsCubit>()
+          .loadMoreSpecificComics(_searchController.text);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(
             children: [
               Expanded(
@@ -120,11 +131,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(MediaRes.bookIcon),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     Text(
-                      'Start typing to find a particular comics',
+                      'Start typing to find a particular comic',
                       maxLines: 2,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.roboto(
@@ -139,11 +148,28 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             );
-          } else if (state is SpecificComicsLoading) {
+          } else if (state is SpecificComicsLoading &&
+              state.specificComics.isEmpty) {
             return const Center(child: LoadingIndicator());
-          } else if (state is SpecificComicsLoaded &&
-                  state.specificComics.isEmpty ||
-              state is ComicsError) {
+          } else if (state is SpecificComicsLoaded ||
+              state is SpecificComicsLoadingMore) {
+            final comics = state is SpecificComicsLoaded
+                ? state.specificComics
+                : (state as SpecificComicsLoadingMore).specificComics;
+            return ListView.builder(
+              controller: _scrollController,
+              itemCount:
+                  comics.length + (state is SpecificComicsLoadingMore ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index < comics.length) {
+                  final comic = comics[index];
+                  return ComicsTile(comics: comic);
+                } else {
+                  return const Center(child: LoadingIndicator());
+                }
+              },
+            );
+          } else if (state is ComicsError) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -151,11 +177,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(MediaRes.magnifyingGlassIcon),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     Text(
-                      'There is no comic book with that name \nin our library. Check the spelling \nand try again.',
+                      'There is no comic book with that name\nin our library. Check the spelling\nand try again.',
                       maxLines: 3,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.roboto(
@@ -169,16 +193,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   ],
                 ),
               ),
-            );
-          } else if (state is SpecificComicsLoaded) {
-            return ListView.builder(
-              itemCount: state.specificComics.length,
-              itemBuilder: (_, index) {
-                Comics comics = state.specificComics[index];
-                return ComicsTile(
-                  comics: comics,
-                );
-              },
             );
           }
           return const SizedBox.shrink();

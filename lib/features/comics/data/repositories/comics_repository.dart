@@ -12,9 +12,11 @@ class ComicsRepositoryImpl implements ComicsRepository {
   final ComicsRemoteDataSource _remoteDataSource;
 
   @override
-  ResultFuture<List<Comics>> getComics() async {
+  ResultFuture<List<Comics>> getComics(
+      {required int offset, required int limit}) async {
     try {
-      final result = await _remoteDataSource.getComics();
+      final result =
+          await _remoteDataSource.getComics(offset: offset, limit: limit);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
@@ -22,9 +24,11 @@ class ComicsRepositoryImpl implements ComicsRepository {
   }
 
   @override
-  ResultFuture<List<Comics>> getSpecificComics({required String query}) async {
+  ResultFuture<List<Comics>> getSpecificComics(
+      {required String query, required int offset, required int limit}) async {
     try {
-      final result = await _remoteDataSource.getSpecificComics(query: query);
+      final result = await _remoteDataSource.getSpecificComics(
+          query: query, offset: offset, limit: limit);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
