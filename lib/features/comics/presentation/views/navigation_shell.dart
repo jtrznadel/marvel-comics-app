@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marvel_comics_app/core/res/media_res.dart';
 import 'package:marvel_comics_app/core/services/injection_container.dart';
 import 'package:marvel_comics_app/features/comics/presentation/cubit/comics_cubit.dart';
-import 'package:marvel_comics_app/features/comics/presentation/views/home_screen.dart';
+import 'package:marvel_comics_app/features/comics/presentation/views/home/home_screen.dart';
 import 'package:marvel_comics_app/features/comics/presentation/views/search/search_screen.dart';
 
 class NavigationShell extends StatefulWidget {

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marvel_comics_app/core/common/widgets/loading_indicator.dart';
 import 'package:marvel_comics_app/core/res/app_colors.dart';
-import 'package:marvel_comics_app/features/comics/domain/entities/comics.dart';
 import 'package:marvel_comics_app/features/comics/presentation/cubit/comics_cubit.dart';
 import 'package:marvel_comics_app/features/comics/presentation/widgets/comics_tile.dart';
 
@@ -15,10 +14,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
-    context.read<ComicsCubit>().getComics();
     super.initState();
+    _scrollController.addListener(_scrollListener);
+    context.read<ComicsCubit>().getComics();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      context.read<ComicsCubit>().loadMoreComics();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -50,32 +65,24 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           if (state is ComicsLoading) {
             return const Center(child: LoadingIndicator());
-          } else if (state is ComicsLoaded && state.comics.isEmpty ||
-              state is ComicsError) {
-            return const Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'Comics have not been found',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
-          } else if (state is ComicsLoaded) {
+          } else if (state is ComicsLoaded || state is ComicsLoadingMore) {
+            final comics = state is ComicsLoaded
+                ? state.comics
+                : (state as ComicsLoadingMore).comics;
             return ListView.builder(
-              itemCount: state.comics.length,
+              controller: _scrollController,
+              itemCount: comics.length + (state is ComicsLoadingMore ? 1 : 0),
               itemBuilder: (_, index) {
-                Comics comics = state.comics[index];
-                return ComicsTile(
-                  comics: comics,
-                );
+                if (index == comics.length) {
+                  return const Center(child: LoadingIndicator());
+                }
+                final comic = comics[index];
+                return ComicsTile(comics: comic);
               },
             );
+          } else if (state is ComicsError) {
+            return Center(
+                child: Text('Failed to load comics: ${state.message}'));
           }
           return const SizedBox.shrink();
         },

@@ -8,8 +8,10 @@ import 'package:marvel_comics_app/features/comics/data/models/comics_model.dart'
 abstract class ComicsRemoteDataSource {
   const ComicsRemoteDataSource();
 
-  Future<List<ComicsModel>> getComics();
-  Future<List<ComicsModel>> getSpecificComics({required String query});
+  Future<List<ComicsModel>> getComics(
+      {required int offset, required int limit});
+  Future<List<ComicsModel>> getSpecificComics(
+      {required String query, required int offset, required int limit});
 }
 
 class ComicsRemoteDataSourceImpl implements ComicsRemoteDataSource {
@@ -25,11 +27,12 @@ class ComicsRemoteDataSourceImpl implements ComicsRemoteDataSource {
   }
 
   @override
-  Future<List<ComicsModel>> getComics() async {
+  Future<List<ComicsModel>> getComics(
+      {required int offset, required int limit}) async {
     final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     final String hash = _generateHash(timestamp);
     final String url =
-        '$baseUrl/comics?orderBy=-modified&ts=$timestamp&apikey=$publicKey&hash=$hash';
+        '$baseUrl/comics?orderBy=-modified&ts=$timestamp&apikey=$publicKey&hash=$hash&offset=$offset&limit=$limit';
 
     try {
       final response = await dio.get(url);
@@ -49,11 +52,12 @@ class ComicsRemoteDataSourceImpl implements ComicsRemoteDataSource {
   }
 
   @override
-  Future<List<ComicsModel>> getSpecificComics({required String query}) async {
+  Future<List<ComicsModel>> getSpecificComics(
+      {required String query, required int offset, required int limit}) async {
     final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     final String hash = _generateHash(timestamp);
     final String url =
-        '$baseUrl/comics?titleStartsWith=$query&orderBy=-modified&ts=$timestamp&apikey=$publicKey&hash=$hash';
+        '$baseUrl/comics?titleStartsWith=$query&orderBy=-modified&ts=$timestamp&apikey=$publicKey&hash=$hash&offset=$offset&limit=$limit';
 
     try {
       final response = await dio.get(url);
